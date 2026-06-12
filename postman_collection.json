@@ -1,0 +1,233 @@
+{
+  "info": {
+    "name": "Travel Deal Management API",
+    "description": "API collection for Travel Deal Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Deals",
+      "item": [
+        {
+          "name": "Get All Deals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Retrieve all travel deals"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Deal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Paris\",\n  \"price\": 1200,\n  \"platform\": \"Booking.com\",\n  \"rating\": 4.5,\n  \"travel_type\": \"Luxury\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Create a new travel deal"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Deal by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "1"
+              ]
+            },
+            "description": "Retrieve a specific deal by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Missing destination",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 1200,\n  \"platform\": \"Booking.com\",\n  \"rating\": 4.5,\n  \"travel_type\": \"Luxury\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Test validation: missing destination"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Negative price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Paris\",\n  \"price\": -100,\n  \"platform\": \"Booking.com\",\n  \"rating\": 4.5,\n  \"travel_type\": \"Luxury\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Test validation: price must be positive"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Rating out of range",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Paris\",\n  \"price\": 1200,\n  \"platform\": \"Booking.com\",\n  \"rating\": 6,\n  \"travel_type\": \"Luxury\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Test validation: rating must be between 1 and 5"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Invalid travel type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Paris\",\n  \"price\": 1200,\n  \"platform\": \"Booking.com\",\n  \"rating\": 4.5,\n  \"travel_type\": \"InvalidType\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Test validation: invalid travel type"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Deal not found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "999"
+              ]
+            },
+            "description": "Test error: deal with ID 999 not found"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}
