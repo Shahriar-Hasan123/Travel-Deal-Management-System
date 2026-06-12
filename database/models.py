@@ -10,7 +10,7 @@ class Deal(db.Model):
     platform = db.Column(db.String(100), nullable=False)
     rating = db.Column(db.Float, nullable=False)
     travel_type = db.Column(db.String(50), nullable=False)
-
+    
     def to_dict(self):
         """model instance to dictionary for JSON response"""
         return {
