@@ -1,12 +1,31 @@
 from flask import Flask
+from config import Config
+from database.models import db
+from routes.deal_routes import deal_bp
 
-app = Flask(__name__)
 
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-@app.route("/")
-def health():
-    return {"msg": "Travel Deal Management System api is running"}
+    # initialize db
+    db.init_app(app)
+
+    # register blueprint
+    app.register_blueprint(deal_bp)
+
+    # Global error handlers
+    @app.errorhandler(Exception)
+    def handle_exception(error):
+        return ({"message": str(error)}, 500)
+
+    # create all db tables
+    with app.app_context():
+        db.create_all()
+
+    return app
 
 
 if __name__ == "__main__":
+    app = create_app()
     app.run(debug=True)
