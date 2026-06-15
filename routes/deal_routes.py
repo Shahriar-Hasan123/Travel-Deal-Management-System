@@ -1,9 +1,13 @@
 from flask import Blueprint, request
 from services.deal_service import DealService
 from utils.response import success_response, error_response
-from utils.query_validator import validate_search_params, validate_filter_params
+from utils.query_validator import (
+    validate_search_params,
+    validate_filter_params,
+    validate_sort_params,
+)
 from utils.logger import get_logger
-from services.search_service import search_deals, filter_deals_by_budget
+from services.search_service import search_deals, filter_deals_by_budget, sort_deals
 
 
 logger = get_logger(__name__)
@@ -42,6 +46,7 @@ def get_deal(id):
 
 @deal_bp.route("/search", methods=["GET"])
 def search():
+
     destination = request.args.get("destination", "").strip() or None
     platform = request.args.get("platform", "").strip() or None
     travel_type = request.args.get("travel_type", "").strip() or None
@@ -79,16 +84,40 @@ def filter_by_budget():
     is_valid, parsed, errors = validate_filter_params(min_price, max_price)
 
     if not is_valid:
-        logger.warning(f" GET /deals/filter - validation failed: {errors}")
+        logger.warning(f"GET /deals/filter - validation failed: {errors}")
         return error_response("Invalid filter parameters", 400, error=errors)
 
     results = filter_deals_by_budget(parsed.get("min_price"), parsed.get("max_price"))
     if not results:
-        logger.info(f' GET /deals/filter no deals in range min={parsed.get("min_price")} max={parsed.get("max_price")}')
-        return success_response({
-            "message": "No deals found in given price range",
-            "total": 0,
-            "deals": [],
-        })
-        
+        logger.info(
+            f"GET /deals/filter no deals in range min={parsed.get("min_price")} max={parsed.get("max_price")}"
+        )
+        return success_response(
+            {
+                "message": "No deals found in given price range",
+                "total": 0,
+                "deals": [],
+            }
+        )
+
+    return success_response({"total": len(results), "deals": results})
+
+
+@deal_bp.route("/sort", methods=["GET"])
+def sort():
+    sort_by = request.args.get("sort_by")
+    order = request.args.get("order")
+
+    is_valid, errors = validate_sort_params(sort_by, order)
+
+    if not is_valid:
+        logger.warning(f"GET /deals/sort — invalid params: {errors}")
+        return error_response("Invalid sort parameters", 400, error=errors)
+
+    results = sort_deals(sort_by, order)
+
+    logger.info(
+        f"GET /deals/sort — sort_by={sort_by}, order={order}, returned {len(results)} deal(s)"
+    )
+
     return success_response({"total": len(results), "deals": results})

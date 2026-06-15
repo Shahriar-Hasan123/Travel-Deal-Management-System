@@ -15,8 +15,10 @@ def search_deals(destination, platform, travel_type):
         query = query.filter(Deal.travel_type == travel_type.capitalize())
 
     results = query.all()
-    logger.info(f"Search executed - destination={destination}, platform={platform}, travel_type={travel_type} - {len(results)} result(s)")
-    
+    logger.info(
+        f"Search executed - destination={destination}, platform={platform}, travel_type={travel_type} - {len(results)} result(s)"
+    )
+
     return [deal.to_dict() for deal in results]
 
 
@@ -29,6 +31,22 @@ def filter_deals_by_budget(min_price, max_price):
         query = query.filter(Deal.price <= max_price)
 
     results = query.all()
-    logger.info(f"Filter executed - min_price={min_price}, max_price={max_price} - {len(results)} result(s)")
-    
+    logger.info(
+        f"Filter executed - min_price={min_price}, max_price={max_price} - {len(results)} result(s)"
+    )
+
+    return [deal.to_dict() for deal in results]
+
+
+def sort_deals(sort_by, order):
+
+    sort_column = getattr(Deal, sort_by)  # example: sort_column = Deal.price
+    sort_column = sort_column.desc() if order == "desc" else sort_column.asc()
+
+    results = Deal.query.order_by(sort_column).all()
+
+    logger.info(
+        f"Sort executed - sort_by={sort_by}, order={order} - {len(results)} result(s)"
+    )
+
     return [deal.to_dict() for deal in results]

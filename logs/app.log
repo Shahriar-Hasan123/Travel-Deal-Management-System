@@ -15,3 +15,19 @@
 [2026-06-15 14:20:56] WARNING in routes.deal_routes:  GET /deals/filter - validation failed: ['max_price can not be negative']
 [2026-06-15 14:21:06] WARNING in routes.deal_routes:  GET /deals/filter - validation failed: ['min_price can not be negative', 'max_price can not be negative']
 [2026-06-15 14:21:16] WARNING in routes.deal_routes:  GET /deals/filter - validation failed: ['min_price can not be negative']
+[2026-06-15 15:57:35] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ['order is required. Valid value: asc,desc']
+[2026-06-15 15:58:27] INFO in services.search_service: Sort executed - sort_by=price, order=asc - 5 result(s)
+[2026-06-15 15:58:27] INFO in routes.deal_routes: GET /deals/sort — sort_by=price, order=asc, returned 5 deal(s)
+[2026-06-15 15:58:44] INFO in services.search_service: Sort executed - sort_by=price, order=desc - 5 result(s)
+[2026-06-15 15:58:44] INFO in routes.deal_routes: GET /deals/sort — sort_by=price, order=desc, returned 5 deal(s)
+[2026-06-15 15:58:57] INFO in services.search_service: Sort executed - sort_by=price, order=desc - 5 result(s)
+[2026-06-15 15:58:57] INFO in routes.deal_routes: GET /deals/sort — sort_by=price, order=desc, returned 5 deal(s)
+[2026-06-15 15:59:05] INFO in services.search_service: Sort executed - sort_by=rating, order=desc - 5 result(s)
+[2026-06-15 15:59:05] INFO in routes.deal_routes: GET /deals/sort — sort_by=rating, order=desc, returned 5 deal(s)
+[2026-06-15 15:59:58] INFO in services.search_service: Sort executed - sort_by=destination, order=asc - 5 result(s)
+[2026-06-15 15:59:58] INFO in routes.deal_routes: GET /deals/sort — sort_by=destination, order=asc, returned 5 deal(s)
+[2026-06-15 16:00:18] INFO in services.search_service: Sort executed - sort_by=rating, order=asc - 5 result(s)
+[2026-06-15 16:00:18] INFO in routes.deal_routes: GET /deals/sort — sort_by=rating, order=asc, returned 5 deal(s)
+[2026-06-15 16:00:59] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ['sort_by is required. Valid fields: price, rating, destination']
+[2026-06-15 16:01:53] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ["Invalid sort_by 'invalid'. Must be one of:  price, rating, destination"]
+[2026-06-15 16:02:04] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ["Invalid order 'invalid'. Must be one of: asc, desc"]

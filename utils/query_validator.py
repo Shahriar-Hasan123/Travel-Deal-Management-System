@@ -1,4 +1,6 @@
 VALID_TRAVEL_TYPES = ["Budget", "Luxury", "Adventure", "Family"]
+VALID_SORT_FIELDS = ["price", "rating", "destination"]
+VALID_SORT_ORDERS = ["asc", "desc"]
 
 
 def validate_search_params(
@@ -47,3 +49,25 @@ def validate_filter_params(min_price, max_price):
             errors.append("max_price can not be smaller than min price")
 
     return (len(errors) == 0), parsed, errors
+
+
+def validate_sort_params(sort_by, order):
+    errors = []
+
+    if not sort_by:
+        errors.append(
+            f"sort_by is required. Valid fields: {', '.join(VALID_SORT_FIELDS)}"
+        )
+    elif sort_by not in VALID_SORT_FIELDS:
+        errors.append(
+            f"Invalid sort_by '{sort_by}'. Must be one of:  {', '.join(VALID_SORT_FIELDS)}"
+        )
+
+    if not order:
+        errors.append(f"order is required. Valid value: {', '.join(VALID_SORT_ORDERS)}")
+    elif order not in VALID_SORT_ORDERS:
+        errors.append(
+            f"Invalid order '{order}'. Must be one of: {', '.join(VALID_SORT_ORDERS)}"
+        )
+
+    return len(errors) == 0, errors
