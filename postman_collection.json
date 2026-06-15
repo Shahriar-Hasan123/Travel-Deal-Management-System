@@ -219,6 +219,313 @@
             "description": "Test error: deal with ID 999 not found"
           },
           "response": []
+        },
+        {
+          "name": "Search Deals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/search?destination=Paris&platform=Expedia&travel_type=Luxury",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "destination",
+                  "value": "Paris"
+                },
+                {
+                  "key": "platform",
+                  "value": "Expedia"
+                },
+                {
+                  "key": "travel_type",
+                  "value": "Luxury"
+                }
+              ]
+            },
+            "description": "Search deals by destination, platform, and travel_type"
+          },
+          "response": []
+        },
+        {
+          "name": "Search by Destination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/search?destination=Bangkok",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "destination",
+                  "value": "Bangkok"
+                }
+              ]
+            },
+            "description": "Search deals by destination only"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/filter?min_price=100&max_price=1000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "min_price",
+                  "value": "100"
+                },
+                {
+                  "key": "max_price",
+                  "value": "1000"
+                }
+              ]
+            },
+            "description": "Filter deals by minimum and maximum price"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by Min Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/filter?min_price=500",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "min_price",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": "Filter deals by minimum price only"
+          },
+          "response": []
+        },
+        {
+          "name": "Sort by Price - Ascending",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?sort_by=price&order=asc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "sort"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            },
+            "description": "Sort deals by price in ascending order"
+          },
+          "response": []
+        },
+        {
+          "name": "Sort by Rating - Descending",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?sort_by=rating&order=desc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "sort"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "rating"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Sort deals by rating in descending order"
+          },
+          "response": []
+        },
+        {
+          "name": "Sort by Destination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?sort_by=destination&order=asc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "sort"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "destination"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            },
+            "description": "Sort deals by destination in ascending order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recently Viewed Deals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/recent",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "recent"
+              ]
+            },
+            "description": "Retrieve the 10 most recently viewed deals"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: No search parameters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/search",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "search"
+              ]
+            },
+            "description": "Test error: search requires at least one parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: No filter parameters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/filter",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "filter"
+              ]
+            },
+            "description": "Test error: filter requires at least one parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Invalid sort order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?sort_by=price&order=invalid",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "sort"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "invalid"
+                }
+              ]
+            },
+            "description": "Test error: invalid sort order"
+          },
+          "response": []
         }
       ]
     }
