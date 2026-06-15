@@ -31,3 +31,7 @@
 [2026-06-15 16:00:59] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ['sort_by is required. Valid fields: price, rating, destination']
 [2026-06-15 16:01:53] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ["Invalid sort_by 'invalid'. Must be one of:  price, rating, destination"]
 [2026-06-15 16:02:04] WARNING in routes.deal_routes: GET /deals/sort — invalid params: ["Invalid order 'invalid'. Must be one of: asc, desc"]
+[2026-06-15 18:08:09] INFO in services.recent_service: Recorded new recent view for deal_id=1
+[2026-06-15 18:08:13] INFO in services.recent_service: Recorded new recent view for deal_id=3
+[2026-06-15 18:08:18] INFO in services.recent_service: Recorded new recent view for deal_id=2
+[2026-06-15 18:08:29] INFO in services.recent_service: Recently viewed deals fetched - 3 deal(s)

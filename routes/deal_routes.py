@@ -8,7 +8,7 @@ from utils.query_validator import (
 )
 from utils.logger import get_logger
 from services.search_service import search_deals, filter_deals_by_budget, sort_deals
-
+from services.recent_service import get_recently_viewed_deals, record_view
 
 logger = get_logger(__name__)
 
@@ -35,12 +35,13 @@ def add_deal():
     return success_response({"message": "Deal created successfully", "deal": deal}, 201)
 
 
-@deal_bp.route("/<int:id>", methods=["GET"])
-def get_deal(id):
-    deal = DealService.get_deal_by_id(id)
+@deal_bp.route("/<int:deal_id>", methods=["GET"])
+def get_deal(deal_id):
+    deal = DealService.get_deal_by_id(deal_id)
     if not deal:
-        return error_response(f"Deal with id {id} not found", 404)
+        return error_response(f"Deal with id {deal_id} not found", 404)
 
+    record_view(deal_id)
     return success_response({"deal": deal}, 200)
 
 
@@ -121,3 +122,16 @@ def sort():
     )
 
     return success_response({"total": len(results), "deals": results})
+
+
+@deal_bp.route("/recent", methods=["GET"])
+def recently_viewed():
+    """GET /deals/recent — Returns last 10 recently viewed deals."""
+    deals = get_recently_viewed_deals()
+
+    if not deals:
+        return success_response(
+            {"message": "No recently viewed deals", "total": 0, "deals": []}
+        )
+
+    return success_response({"total": len(deals), "deals": deals})

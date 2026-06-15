@@ -50,3 +50,4 @@ def sort_deals(sort_by, order):
     )
 
     return [deal.to_dict() for deal in results]
+
