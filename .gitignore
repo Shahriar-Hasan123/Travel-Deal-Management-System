@@ -1,21 +1,61 @@
-# Virtual Environment
-.venv
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
 
-# Python
+# Byte-compiled / caches
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
 
-# Environment
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environment variables / local config
 .env
-.env.local
-
-# Flask
+.env.*
 instance/
 
-# IDE
+# Flask instance DB / local DB files
+*.db
+*.sqlite3
+
+# Migrations
+migrations/
+alembic.ini
+
+# Logs
+logs/
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+coverage.xml
+
+# Type check / caches
+.mypy_cache/
+.ruff_cache/
+
+# IDEs and editors
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 
-# OS
+# OS files
 .DS_Store
+Thumbs.db
+
+# Misc
+celerybeat-schedule
+*.so
