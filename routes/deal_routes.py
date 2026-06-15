@@ -1,3 +1,5 @@
+"""Blueprint routes for deals and recent view endpoints."""
+
 from flask import Blueprint, request
 from services.deal_service import DealService
 from utils.response import success_response, error_response
@@ -17,12 +19,14 @@ deal_bp = Blueprint("deals", __name__, url_prefix="/deals")
 
 @deal_bp.route("", methods=["GET"])
 def list_deals():
+    """Return all travel deals."""
     deals = DealService.get_all_deals()
     return success_response({"total": len(deals), "deals": deals}, 200)
 
 
 @deal_bp.route("", methods=["POST"])
 def add_deal():
+    """Create a new travel deal from request JSON."""
     data = request.get_json()
     if not data:
         return error_response("Request body must be valid JSON", 400)
@@ -37,6 +41,7 @@ def add_deal():
 
 @deal_bp.route("/<int:deal_id>", methods=["GET"])
 def get_deal(deal_id):
+    """Return a deal by ID and record it as viewed."""
     deal = DealService.get_deal_by_id(deal_id)
     if not deal:
         return error_response(f"Deal with id {deal_id} not found", 404)
@@ -47,6 +52,7 @@ def get_deal(deal_id):
 
 @deal_bp.route("/search", methods=["GET"])
 def search():
+    """Search deals by destination, platform, or travel type."""
 
     destination = request.args.get("destination", "").strip() or None
     platform = request.args.get("platform", "").strip() or None
@@ -54,13 +60,13 @@ def search():
 
     is_valid, errors = validate_search_params(destination, platform, travel_type)
     if not is_valid:
-        logger.warning(f" GET /deals/search - Invalid params: {errors}")
+        logger.warning(f"GET /deals/search - Invalid params: {errors}")
         return error_response("Invalid search parameters", 400, error=errors)
 
     results = search_deals(destination, platform, travel_type)
 
     if not results:
-        logger.info(" GET /deals/search - No match found")
+        logger.info("GET /deals/search - No match found")
         return success_response(
             {
                 "message": "No deals matched your search criteria",
@@ -106,6 +112,7 @@ def filter_by_budget():
 
 @deal_bp.route("/sort", methods=["GET"])
 def sort():
+    """Sort deals by the requested field and order."""
     sort_by = request.args.get("sort_by")
     order = request.args.get("order")
 

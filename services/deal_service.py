@@ -1,3 +1,5 @@
+"""Deal service helpers for CRUD operations."""
+
 from database.models import Deal
 from utils.validator import validate_deal_input
 from database.models import db
@@ -6,11 +8,13 @@ from database.models import db
 class DealService:
     @staticmethod
     def get_all_deals():
+        """Return all deals as dictionaries."""
         deals = Deal.query.all()
         return [deal.to_dict() for deal in deals]
 
     @staticmethod
     def create_deal(data):
+        """Validate and create a new deal record."""
         is_validate, errors = validate_deal_input(data)
 
         if not is_validate:
@@ -31,6 +35,7 @@ class DealService:
 
     @staticmethod
     def get_deal_by_id(id):
+        """Return a single deal by ID or None if not found."""
         deal = Deal.query.get(id)
         if deal is None:
             return None

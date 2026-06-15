@@ -1,3 +1,5 @@
+"""Logger setup for application debugging and audit logs."""
+
 import logging
 import os
 

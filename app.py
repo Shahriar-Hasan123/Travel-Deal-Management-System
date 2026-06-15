@@ -5,6 +5,7 @@ from routes.deal_routes import deal_bp
 
 
 def create_app():
+    """Create and configure the Flask application."""
     app = Flask(__name__)
     app.config.from_object(Config)
 

@@ -1,3 +1,5 @@
+"""Query parameter validation logic for search, filter, and sort."""
+
 VALID_TRAVEL_TYPES = ["Budget", "Luxury", "Adventure", "Family"]
 VALID_SORT_FIELDS = ["price", "rating", "destination"]
 VALID_SORT_ORDERS = ["asc", "desc"]
@@ -6,6 +8,7 @@ VALID_SORT_ORDERS = ["asc", "desc"]
 def validate_search_params(
     destination: str | None, platform: str | None, travel_type: str | None
 ):
+    """Validate search query parameters."""
     errors = []
     if not any([destination, platform, travel_type]):
         errors.append(
@@ -21,6 +24,7 @@ def validate_search_params(
 
 
 def validate_filter_params(min_price, max_price):
+    """Validate minimum and maximum price filter values."""
     errors = []
     parsed = {}
 
@@ -52,6 +56,7 @@ def validate_filter_params(min_price, max_price):
 
 
 def validate_sort_params(sort_by, order):
+    """Validate sort field and order parameters."""
     errors = []
 
     if not sort_by:

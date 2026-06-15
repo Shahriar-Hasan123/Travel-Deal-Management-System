@@ -1,3 +1,5 @@
+"""Database models for travel deals and recent views."""
+
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 
@@ -5,6 +7,7 @@ db = SQLAlchemy()
 
 
 class Deal(db.Model):
+    """Travel deal record."""
     __tablename__ = "deals"
     
     id = db.Column(db.Integer, primary_key=True)
@@ -15,7 +18,7 @@ class Deal(db.Model):
     travel_type = db.Column(db.String(50), nullable=False)
 
     def to_dict(self):
-        """model instance to dictionary for JSON response"""
+        """Convert the model instance to a JSON-friendly dictionary."""
         return {
             "id": self.id,
             "destination": self.destination,
@@ -27,6 +30,7 @@ class Deal(db.Model):
 
 
 class RecentView(db.Model):
+    """Tracks recently viewed deals."""
     __tablename__ = "recent_views"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -1,3 +1,5 @@
+"""Search, filter, and sort helpers for deals."""
+
 from database.models import Deal
 from utils.logger import get_logger
 
@@ -5,6 +7,7 @@ logger = get_logger(__name__)
 
 
 def search_deals(destination, platform, travel_type):
+    """Return deals matching search criteria."""
     query = Deal.query
 
     if destination:
@@ -23,6 +26,7 @@ def search_deals(destination, platform, travel_type):
 
 
 def filter_deals_by_budget(min_price, max_price):
+    """Return deals within the requested price range."""
     query = Deal.query
 
     if min_price is not None:
@@ -39,7 +43,7 @@ def filter_deals_by_budget(min_price, max_price):
 
 
 def sort_deals(sort_by, order):
-
+    """Return deals sorted by the given field."""
     sort_column = getattr(Deal, sort_by)  # example: sort_column = Deal.price
     sort_column = sort_column.desc() if order == "desc" else sort_column.asc()
 

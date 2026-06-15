@@ -1,7 +1,10 @@
+"""Deal input validation utilities."""
+
 VALID_TRAVEL_TYPES = ["Budget", "Luxury", "Adventure", "Family"]
 
 
 def validate_deal_input(data):
+    """Validate required fields for a deal payload."""
     errors = []
 
     destination = data.get("destination", "")
@@ -16,7 +19,7 @@ def validate_deal_input(data):
 
     platform = data.get("platform")
     if not platform.strip() or not isinstance(platform, str):
-        errors.append("plateform can not be empty")
+        errors.append("platform can not be empty")
 
     rating = data.get("rating")
     if rating is None:
@@ -28,4 +31,4 @@ def validate_deal_input(data):
     if travel_type not in VALID_TRAVEL_TYPES:
         errors.append(f"travel_type must be one of: {', '.join(VALID_TRAVEL_TYPES)}")
     
-    return len(errors)==0, errors
+    return len(errors) == 0, errors
