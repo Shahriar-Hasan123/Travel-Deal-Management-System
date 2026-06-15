@@ -15,7 +15,20 @@ def search_deals(destination, platform, travel_type):
         query = query.filter(Deal.travel_type == travel_type.capitalize())
 
     results = query.all()
-    logger.info(
-        f"Search executed — destination={destination}, platform={platform}, travel_type={travel_type} — {len(results)} result(s)"
-    )
+    logger.info(f"Search executed - destination={destination}, platform={platform}, travel_type={travel_type} - {len(results)} result(s)")
+    
+    return [deal.to_dict() for deal in results]
+
+
+def filter_deals_by_budget(min_price, max_price):
+    query = Deal.query
+
+    if min_price is not None:
+        query = query.filter(Deal.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Deal.price <= max_price)
+
+    results = query.all()
+    logger.info(f"Filter executed - min_price={min_price}, max_price={max_price} - {len(results)} result(s)")
+    
     return [deal.to_dict() for deal in results]

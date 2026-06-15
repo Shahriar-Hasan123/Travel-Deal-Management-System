@@ -1,9 +1,9 @@
 from flask import Blueprint, request
 from services.deal_service import DealService
 from utils.response import success_response, error_response
-from utils.query_validator import validate_search_params
+from utils.query_validator import validate_search_params, validate_filter_params
 from utils.logger import get_logger
-from services.search_service import search_deals
+from services.search_service import search_deals, filter_deals_by_budget
 
 
 logger = get_logger(__name__)
@@ -63,4 +63,32 @@ def search():
             }
         )
 
+    return success_response({"total": len(results), "deals": results})
+
+
+@deal_bp.route("/filter", methods=["GET"])
+def filter_by_budget():
+
+    min_price = request.args.get("min_price")
+    max_price = request.args.get("max_price")
+
+    if min_price is None and max_price is None:
+        logger.warning("GET /deals/filter called with no parameters")
+        return error_response("At least one of min_price or max_price is required", 400)
+
+    is_valid, parsed, errors = validate_filter_params(min_price, max_price)
+
+    if not is_valid:
+        logger.warning(f" GET /deals/filter - validation failed: {errors}")
+        return error_response("Invalid filter parameters", 400, error=errors)
+
+    results = filter_deals_by_budget(parsed.get("min_price"), parsed.get("max_price"))
+    if not results:
+        logger.info(f' GET /deals/filter no deals in range min={parsed.get("min_price")} max={parsed.get("max_price")}')
+        return success_response({
+            "message": "No deals found in given price range",
+            "total": 0,
+            "deals": [],
+        })
+        
     return success_response({"total": len(results), "deals": results})
