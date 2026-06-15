@@ -1,0 +1,7 @@
+[2026-06-15 13:14:30] INFO in services.search_service: Search executed — destination=Paris, platform=None, travel_type=None — 4 result(s)
+[2026-06-15 13:14:42] INFO in services.search_service: Search executed — destination=None, platform=Web, travel_type=None — 1 result(s)
+[2026-06-15 13:14:55] INFO in services.search_service: Search executed — destination=None, platform=book, travel_type=None — 4 result(s)
+[2026-06-15 13:15:11] WARNING in routes.deal_routes:  GET /deals/search - Invalid params: ["Unknown travel type 'L'. Must be one of: Budget, Luxury, Adventure, Family"]
+[2026-06-15 13:15:20] WARNING in routes.deal_routes:  GET /deals/search - Invalid params: ["Unknown travel type 'Lux'. Must be one of: Budget, Luxury, Adventure, Family"]
+[2026-06-15 13:16:08] INFO in services.search_service: Search executed — destination=None, platform=None, travel_type=Luxury — 4 result(s)
+[2026-06-15 13:20:13] INFO in services.search_service: Search executed — destination=Paris, platform=None, travel_type=Luxury — 4 result(s)

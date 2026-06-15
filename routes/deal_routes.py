@@ -1,6 +1,12 @@
 from flask import Blueprint, request
 from services.deal_service import DealService
 from utils.response import success_response, error_response
+from utils.query_validator import validate_search_params
+from utils.logger import get_logger
+from services.search_service import search_deals
+
+
+logger = get_logger(__name__)
 
 deal_bp = Blueprint("deals", __name__, url_prefix="/deals")
 
@@ -32,3 +38,29 @@ def get_deal(id):
         return error_response(f"Deal with id {id} not found", 404)
 
     return success_response({"deal": deal}, 200)
+
+
+@deal_bp.route("/search", methods=["GET"])
+def search():
+    destination = request.args.get("destination", "").strip() or None
+    platform = request.args.get("platform", "").strip() or None
+    travel_type = request.args.get("travel_type", "").strip() or None
+
+    is_valid, errors = validate_search_params(destination, platform, travel_type)
+    if not is_valid:
+        logger.warning(f" GET /deals/search - Invalid params: {errors}")
+        return error_response("Invalid search parameters", 400, error=errors)
+
+    results = search_deals(destination, platform, travel_type)
+
+    if not results:
+        logger.info(" GET /deals/search - No match found")
+        return success_response(
+            {
+                "message": "No deals matched your search criteria",
+                "total": 0,
+                "deals": [],
+            }
+        )
+
+    return success_response({"total": len(results), "deals": results})

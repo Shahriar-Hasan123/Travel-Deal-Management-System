@@ -1,0 +1,21 @@
+from database.models import Deal
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+
+
+def search_deals(destination, platform, travel_type):
+    query = Deal.query
+
+    if destination:
+        query = query.filter(Deal.destination.ilike(f"%{destination}%"))
+    if platform:
+        query = query.filter(Deal.platform.ilike(f"%{platform}%"))
+    if travel_type:
+        query = query.filter(Deal.travel_type == travel_type.capitalize())
+
+    results = query.all()
+    logger.info(
+        f"Search executed — destination={destination}, platform={platform}, travel_type={travel_type} — {len(results)} result(s)"
+    )
+    return [deal.to_dict() for deal in results]
