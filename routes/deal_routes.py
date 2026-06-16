@@ -50,6 +50,30 @@ def get_deal(deal_id):
     return success_response({"deal": deal}, 200)
 
 
+@deal_bp.route("/<int:deal_id>", methods=["PUT"])
+def update_deal(deal_id):
+    
+    data = request.get_json(silent=True)
+    
+    if not data:
+        logger.warning(f"PUT /deals/{deal_id} — invalid or missing JSON body")
+        return error_response("Request body must be valid JSON", 400)
+
+    deal, errors, status = DealService.update_deal(deal_id, data)
+    
+    if errors:
+        logger.warning(f"PUT /deals/{deal_id} — failed: {errors}")
+        return error_response("Deal not found" if status == 404 else "Validation failed", status, error=errors)
+    
+    logger.info(f"Deal updated - id={deal_id}")
+    return success_response({"message": "Deal updated successfully", "deal": deal})
+
+
+        
+        
+# ------------------------------------search, filter, sort-------------------------------
+
+
 @deal_bp.route("/search", methods=["GET"])
 def search():
     """Search deals by destination, platform, or travel type."""

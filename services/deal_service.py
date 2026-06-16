@@ -3,6 +3,9 @@
 from database.models import Deal
 from utils.validator import validate_deal_input
 from database.models import db
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class DealService:
@@ -40,3 +43,25 @@ class DealService:
         if deal is None:
             return None
         return deal.to_dict()
+
+    @staticmethod
+    def update_deal(deal_id, data):
+
+        deal = Deal.query.get(deal_id)
+        if not deal:
+            return None, [f"Deal with id '{deal_id}' not found"], 404
+
+        isValid, errors = validate_deal_input(data)
+        if not isValid:
+            return None, errors, 422
+
+        deal.destination = data["destination"].strip()
+        deal.price = float(data["price"])
+        deal.platform = data["platform"].strip()
+        deal.rating = float(data["rating"])
+        deal.travel_type = data["travel_type"]
+
+        db.session.commit()
+        logger.info(f"Deal Updated: id={deal_id}")
+
+        return deal.to_dict(), None, 200
