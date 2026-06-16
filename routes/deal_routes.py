@@ -11,6 +11,7 @@ from utils.query_validator import (
 from utils.logger import get_logger
 from services.search_service import search_deals, filter_deals_by_budget, sort_deals
 from services.recent_service import get_recently_viewed_deals, record_view
+from services.popular_service import get_popular_deals, record_deal_view
 
 logger = get_logger(__name__)
 
@@ -47,40 +48,47 @@ def get_deal(deal_id):
         return error_response(f"Deal with id {deal_id} not found", 404)
 
     record_view(deal_id)
+    record_deal_view(deal_id)
     return success_response({"deal": deal}, 200)
 
 
 @deal_bp.route("/<int:deal_id>", methods=["PUT"])
 def update_deal(deal_id):
-    
+
     data = request.get_json(silent=True)
-    
+
     if not data:
         logger.warning(f"PUT /deals/{deal_id} — invalid or missing JSON body")
         return error_response("Request body must be valid JSON", 400)
 
     deal, errors, status = DealService.update_deal(deal_id, data)
-    
+
     if errors:
         logger.warning(f"PUT /deals/{deal_id} — failed: {errors}")
-        return error_response("Deal not found" if status == 404 else "Validation failed", status, error=errors)
-    
+        return error_response(
+            "Deal not found" if status == 404 else "Validation failed",
+            status,
+            error=errors,
+        )
+
     logger.info(f"Deal updated - id={deal_id}")
     return success_response({"message": "Deal updated successfully", "deal": deal})
 
-@deal_bp.route("/<int:deal_id>",methods=["DELETE"])
-def delete_deal(deal_id):
-    
-    success, error_msg=DealService.delete_deal(deal_id)
-    
-    if not success:
-       return error_response(error_msg,404)
-        
-    logger.info(f"Deal deleted — id={deal_id}")
-    return success_response({"message": f"Deal with id '{deal_id}' deleted successfully"},200)
 
-        
-        
+@deal_bp.route("/<int:deal_id>", methods=["DELETE"])
+def delete_deal(deal_id):
+
+    success, error_msg = DealService.delete_deal(deal_id)
+
+    if not success:
+        return error_response(error_msg, 404)
+
+    logger.info(f"Deal deleted — id={deal_id}")
+    return success_response(
+        {"message": f"Deal with id '{deal_id}' deleted successfully"}, 200
+    )
+
+
 # ------------------------------------search, filter, sort-------------------------------
 
 
@@ -176,3 +184,13 @@ def recently_viewed():
         )
 
     return success_response({"total": len(deals), "deals": deals})
+
+
+@deal_bp.route("/popular", methods=["GET"])
+def popular_deals():
+    deals = get_popular_deals()
+    if not deals:
+        return success_response(
+            {"message": "No deals have been viewed yet", "total": 0, "deals": []}, 200
+        )
+    return success_response({"total": len(deals), "deals": deals}, 200)

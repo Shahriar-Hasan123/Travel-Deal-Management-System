@@ -10,7 +10,7 @@ class Deal(db.Model):
     """Travel deal record."""
     __tablename__ = "deals"
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     destination = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     platform = db.Column(db.String(100), nullable=False)
@@ -38,3 +38,18 @@ class RecentView(db.Model):
     viewed_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     
     deal = db.relationship("Deal", backref="recent_view")
+
+class DealView(db.Model):
+    __tablename__="deal_views"
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    deal_id=db.Column(db.Integer, db.ForeignKey("deals.id", ondelete="CASCADE"),nullable=False, unique=True)
+    view_count=db.Column(db.Integer, nullable=False, default=False)
+    
+    deal=db.relationship("Deal", backref="view_stat")
+    
+    def to_dict(self):
+        return {
+            "deal": self.deal.to_dict(),
+            "view_count":self.view_count,
+        }
