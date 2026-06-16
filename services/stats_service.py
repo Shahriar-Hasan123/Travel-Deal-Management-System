@@ -1,4 +1,4 @@
-from database.models import db, ApiStat, DealView
+from database.models import db, ApiStat, DealView, Deal
 from utils.logger import get_logger
 import json
 
@@ -58,7 +58,8 @@ def get_api_stats():
             "most_viewed_deal": None,
         }
 
-    most_viewed = DealView.query.filter(DealView.deal_id.isnot(None)).order_by(DealView.view_count.desc()).first()
+    # Use join to filter out orphaned records (where deal was deleted)
+    most_viewed = DealView.query.join(Deal).order_by(DealView.view_count.desc()).first()
 
     return {
         "total_requests": stat.total_requests,

@@ -1,6 +1,6 @@
 """Services for tracking and fetching recently viewed deals."""
 
-from database.models import db, RecentView
+from database.models import db, RecentView, Deal
 from utils.logger import get_logger
 from datetime import datetime, timezone
 
@@ -22,8 +22,9 @@ def record_view(deal_id):
 
 def get_recently_viewed_deals():
     """Return the last 10 recently viewed deals."""
+    
     recent_views = (
-        RecentView.query.order_by(RecentView.viewed_at.desc()).limit(10).all()
+        RecentView.query.join(Deal).order_by(RecentView.viewed_at.desc()).limit(10).all()
     )
 
     if not recent_views:

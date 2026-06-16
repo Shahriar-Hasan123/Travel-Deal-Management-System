@@ -1,4 +1,4 @@
-from database.models import db, DealView
+from database.models import db, DealView, Deal
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -17,6 +17,6 @@ def record_deal_view(deal_id):
 
 
 def get_popular_deals(limit=5):
-    results = DealView.query.filter(DealView.view_count > 0).order_by(DealView.view_count.desc()).limit(limit).all()
+    results = DealView.query.join(Deal).filter(DealView.view_count > 0).order_by(DealView.view_count.desc()).limit(limit).all()
     logger.info(f"Popular deals fetched - {len(results)} deal(s)")
     return [r.to_dict() for r in results]
