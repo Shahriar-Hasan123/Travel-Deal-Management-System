@@ -1,11 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from config import Config
 from database.models import db
 from routes.deal_routes import deal_bp
 from routes.stats_routes import stats_bp
 from utils.logger import get_logger
-
-logger = get_logger(__name__)
 
 
 def create_app():
@@ -20,9 +18,7 @@ def create_app():
     app.register_blueprint(deal_bp)
     app.register_blueprint(stats_bp)
 
-    # create all db tables
-    with app.app_context():
-        db.create_all()
+    logger = get_logger(__name__)
 
     # -----Middleware-----
     @app.before_request
@@ -44,24 +40,20 @@ def create_app():
         record_request(success=success, destination=destination)
 
         logger.info(
-            f"Response — {request.method} {request.path} " f"→ {response.status_code}"
+            f"Response — {request.method} {request.path} "
+            f"→ {response.status_code}"
         )
 
         return response
-    
-    # -------Global Error Handlers-----------
-    @app.errorhandler(404)
-    def not_found(e):
-        return jsonify({"success": False, "message": "Endpoint not found"}), 404
 
-    @app.errorhandler(405)
-    def method_not_allowed(e):
-        return jsonify({"success": False, "message": "Method not allowed"}), 405
+    # Global error handlers
+    @app.errorhandler(Exception)
+    def handle_exception(error):
+        return ({"message": str(error)}, 500)
 
-    @app.errorhandler(500)
-    def internal_error(e):
-        db.session.rollback()
-        return jsonify({"success": False, "message": "Internal server error"}), 500
+    # create all db tables
+    with app.app_context():
+        db.create_all()
 
     return app
 

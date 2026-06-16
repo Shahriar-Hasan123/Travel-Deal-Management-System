@@ -50,7 +50,7 @@ class DealView(db.Model):
 
     def to_dict(self):
         return {
-            "deal": self.deal.to_dict(),
+            "deal": self.deal.to_dict() if self.deal else None,
             "view_count":self.view_count,
         }
 

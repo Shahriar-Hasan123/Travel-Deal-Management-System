@@ -58,7 +58,7 @@ def get_api_stats():
             "most_viewed_deal": None,
         }
 
-    most_viewed = DealView.query.order_by(DealView.view_count.desc()).first()
+    most_viewed = DealView.query.filter(DealView.deal_id.isnot(None)).order_by(DealView.view_count.desc()).first()
 
     return {
         "total_requests": stat.total_requests,

@@ -80,6 +80,58 @@
           "response": []
         },
         {
+          "name": "Update Deal by ID",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Tokyo\",\n  \"price\": 1500,\n  \"platform\": \"Agoda\",\n  \"rating\": 4.8,\n  \"travel_type\": \"Adventure\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "1"
+              ]
+            },
+            "description": "Update an existing deal by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Deal by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "1"
+              ]
+            },
+            "description": "Delete a deal by ID"
+          },
+          "response": []
+        },
+        {
           "name": "Error: Missing destination",
           "request": {
             "method": "POST",
@@ -455,6 +507,27 @@
           "response": []
         },
         {
+          "name": "Get Popular Deals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/popular",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "popular"
+              ]
+            },
+            "description": "Retrieve the most popular (most-viewed) deals"
+          },
+          "response": []
+        },
+        {
           "name": "Error: No search parameters",
           "request": {
             "method": "GET",
@@ -497,12 +570,153 @@
           "response": []
         },
         {
-          "name": "Error: Invalid sort order",
+          "name": "Error: Update Deal not found",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Tokyo\",\n  \"price\": 1500,\n  \"platform\": \"Agoda\",\n  \"rating\": 4.8,\n  \"travel_type\": \"Adventure\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "999"
+              ]
+            },
+            "description": "Test error: update deal with ID 999 not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Update with invalid price",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Tokyo\",\n  \"price\": -500,\n  \"platform\": \"Agoda\",\n  \"rating\": 4.8,\n  \"travel_type\": \"Adventure\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "1"
+              ]
+            },
+            "description": "Test validation: update with negative price"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Delete deal not found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "999"
+              ]
+            },
+            "description": "Test error: delete deal with ID 999 not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Filter with max < min",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:5000/deals/sort?sort_by=price&order=invalid",
+              "raw": "http://localhost:5000/deals/filter?min_price=1000&max_price=100",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "min_price",
+                  "value": "1000"
+                },
+                {
+                  "key": "max_price",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Test validation: max_price must be >= min_price"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Sort missing sort_by",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?order=asc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "sort"
+              ],
+              "query": [
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            },
+            "description": "Test error: sort requires sort_by parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Sort invalid sort_by",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?sort_by=invalid&order=asc",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -515,15 +729,70 @@
               "query": [
                 {
                   "key": "sort_by",
-                  "value": "price"
+                  "value": "invalid"
                 },
                 {
                   "key": "order",
-                  "value": "invalid"
+                  "value": "asc"
                 }
               ]
             },
-            "description": "Test error: invalid sort order"
+            "description": "Test validation: sort_by must be price, rating, or destination"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Create with invalid JSON",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            },
+            "description": "Test error: request body must be valid JSON"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stats",
+      "item": [
+        {
+          "name": "Get API Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/stats",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "stats"
+              ]
+            },
+            "description": "Retrieve global API statistics (total requests, success rate, most-searched destination, most-viewed deal)"
           },
           "response": []
         }
