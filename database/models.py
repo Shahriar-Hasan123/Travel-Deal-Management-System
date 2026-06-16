@@ -41,15 +41,26 @@ class RecentView(db.Model):
 
 class DealView(db.Model):
     __tablename__="deal_views"
-    
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     deal_id=db.Column(db.Integer, db.ForeignKey("deals.id", ondelete="CASCADE"),nullable=False, unique=True)
     view_count=db.Column(db.Integer, nullable=False, default=False)
-    
-    deal=db.relationship("Deal", backref="view_stat")
-    
+
+    deal = db.relationship("Deal", backref="view_stat")
+
     def to_dict(self):
         return {
             "deal": self.deal.to_dict(),
             "view_count":self.view_count,
         }
+
+
+class ApiStat(db.Model):
+    __tablename__ = "api_stats"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    total_requests = db.Column(db.Integer, nullable=False, default=0)
+    successful_requests = db.Column(db.Integer, nullable=False, default=0)
+    failed_requests = db.Column(db.Integer, nullable=False, default=0)
+    # Column name matches existing database schema: 'search_destination_tally'
+    search_destination_tally = db.Column(db.Text, nullable=False, default="{}")

@@ -21,34 +21,43 @@ deal_bp = Blueprint("deals", __name__, url_prefix="/deals")
 @deal_bp.route("", methods=["GET"])
 def list_deals():
     """Return all travel deals."""
+
     deals = DealService.get_all_deals()
+    logger.info(f"GET /deals — returned {len(deals)} deal(s)")
     return success_response({"total": len(deals), "deals": deals}, 200)
 
 
 @deal_bp.route("", methods=["POST"])
 def add_deal():
     """Create a new travel deal from request JSON."""
+
     data = request.get_json()
     if not data:
+        logger.warning("POST /deals - invalid or missing JSON body")
         return error_response("Request body must be valid JSON", 400)
 
     deal, errors = DealService.create_deal(data)
 
     if errors:
+        logger.warning(f"POST /deals - validation failed: {errors}")
         return error_response("Validation failed", 422, error=errors)
 
+    logger.info(f"Deal created - id={deal['id']}")
     return success_response({"message": "Deal created successfully", "deal": deal}, 201)
 
 
 @deal_bp.route("/<int:deal_id>", methods=["GET"])
 def get_deal(deal_id):
     """Return a deal by ID and record it as viewed."""
+
     deal = DealService.get_deal_by_id(deal_id)
     if not deal:
+        logger.warning(f"GET /deals/{deal_id} - not found")
         return error_response(f"Deal with id {deal_id} not found", 404)
 
     record_view(deal_id)
     record_deal_view(deal_id)
+    logger.info(f"GET /deals/{deal_id} - found")
     return success_response({"deal": deal}, 200)
 
 
@@ -83,7 +92,7 @@ def delete_deal(deal_id):
     if not success:
         return error_response(error_msg, 404)
 
-    logger.info(f"Deal deleted — id={deal_id}")
+    logger.info(f"Deal deleted - id={deal_id}")
     return success_response(
         {"message": f"Deal with id '{deal_id}' deleted successfully"}, 200
     )
@@ -139,7 +148,7 @@ def filter_by_budget():
     results = filter_deals_by_budget(parsed.get("min_price"), parsed.get("max_price"))
     if not results:
         logger.info(
-            f"GET /deals/filter no deals in range min={parsed.get("min_price")} max={parsed.get("max_price")}"
+            f"GET /deals/filter no deals in range min={parsed.get('min_price')} max={parsed.get('max_price')}"
         )
         return success_response(
             {
