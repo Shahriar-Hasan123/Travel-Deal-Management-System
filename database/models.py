@@ -37,7 +37,7 @@ class RecentView(db.Model):
     deal_id = db.Column(db.Integer, db.ForeignKey("deals.id", ondelete="CASCADE"), unique=True, nullable=False)
     viewed_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     
-    deal = db.relationship("Deal", backref="recent_view")
+    deal = db.relationship("Deal", backref="recent_view", passive_deletes=True)
 
 class DealView(db.Model):
     __tablename__="deal_views"
@@ -46,7 +46,7 @@ class DealView(db.Model):
     deal_id=db.Column(db.Integer, db.ForeignKey("deals.id", ondelete="CASCADE"),nullable=False, unique=True)
     view_count=db.Column(db.Integer, nullable=False, default=False)
 
-    deal = db.relationship("Deal", backref="view_stat")
+    deal = db.relationship("Deal", backref="view_stat", passive_deletes=True)
 
     def to_dict(self):
         return {

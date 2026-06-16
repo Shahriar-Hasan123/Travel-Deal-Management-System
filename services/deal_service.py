@@ -2,7 +2,7 @@
 
 from database.models import Deal
 from utils.validator import validate_deal_input
-from database.models import db
+from database.models import db, RecentView, DealView
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -72,7 +72,11 @@ class DealService:
         if not deal:
             logger.warning(f"Delete attempted on non-existent deal_id={deal_id}")
             return False, f"Deal with id '{deal_id}' not found"
-
+        
+        # Explicitly delete related records before deleting the deal
+        RecentView.query.filter_by(deal_id=deal_id).delete()
+        DealView.query.filter_by(deal_id=deal_id).delete()
+        
         db.session.delete(deal)
         db.session.commit()
 
