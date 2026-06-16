@@ -68,6 +68,16 @@ def update_deal(deal_id):
     logger.info(f"Deal updated - id={deal_id}")
     return success_response({"message": "Deal updated successfully", "deal": deal})
 
+@deal_bp.route("/<int:deal_id>",methods=["DELETE"])
+def delete_deal(deal_id):
+    
+    success, error_msg=DealService.delete_deal(deal_id)
+    
+    if not success:
+       return error_response(error_msg,404)
+        
+    logger.info(f"Deal deleted — id={deal_id}")
+    return success_response({"message": f"Deal with id '{deal_id}' deleted successfully"},200)
 
         
         

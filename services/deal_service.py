@@ -65,3 +65,16 @@ class DealService:
         logger.info(f"Deal Updated: id={deal_id}")
 
         return deal.to_dict(), None, 200
+
+    @staticmethod
+    def delete_deal(deal_id):
+        deal = Deal.query.get(deal_id)
+        if not deal:
+            logger.warning(f"Delete attempted on non-existent deal_id={deal_id}")
+            return False, f"Deal with id '{deal_id}' not found"
+
+        db.session.delete(deal)
+        db.session.commit()
+
+        logger.info(f"Deal deleted — id={deal_id}")
+        return True, None
