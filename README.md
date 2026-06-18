@@ -31,8 +31,8 @@ A professional REST API for managing travel deals built with Flask and SQLAlchem
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/Shahriar-Hasan123/Travel-Deal-Management-System.git
-cd Travel_Deal_Management_System
+git clone https://github.com/Shahriar-Hasan123/Travel-Deal-Management-System-Shahriar_Hasan.git
+cd Travel-Deal-Management-System-Shahriar_Hasan
 ```
 
 2. **Create virtual environment**
